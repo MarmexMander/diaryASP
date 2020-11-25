@@ -8,6 +8,7 @@ namespace WorkDiary.Models
 {
     public class DiaryContext : DbContext
     {
+        //DB arrays
         public DbSet<Object> Product { get; set; }
 
         public DiaryContext(DbContextOptions<DiaryContext> options)
