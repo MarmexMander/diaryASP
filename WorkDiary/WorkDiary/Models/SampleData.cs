@@ -11,30 +11,17 @@ namespace WorkDiary.Models
         {
             //Add data
 
-            //if (!context.Objects.Any())
-            //{
-                //context.Objects.AddRange(
-                //    new Object
-                //    {
-                //        Name = "Something 1",
-                //        Company = "Company 1",
-                //        Price = 600
-                //    },
-                //    new Object
-                //    {
-                //        Name = "Something 2",
-                //        Company = "Company 2",
-                //        Price = 550
-                //    },
-                //    new Object
-                //    {
-                //        Name = "Something 3",
-                //        Company = "Company 3",
-                //        Price = 500
-                //    }
-                //);
+            if (!context.Users.Any())
+            {
+                context.Objects.AddRange(
+                    new User
+                    {
+                        FullName = "Root Admin",
+                        PassHash = ""
+                    }
+                );
                 context.SaveChanges();
-            //}
+            }
         }
     }
 }
