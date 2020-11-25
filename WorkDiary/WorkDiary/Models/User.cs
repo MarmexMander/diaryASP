@@ -13,6 +13,7 @@ namespace WorkDiary.Models
         string passHash;
         DateTime birthdTime;
         int accessLevel;
+        string status;
 
         public string Email { get => email; set => email = value; }
         public int AccessLevel { get => accessLevel; set => accessLevel = value; }
@@ -20,5 +21,6 @@ namespace WorkDiary.Models
         public int Id { get => id; set => id = value; }
         public string PassHash { get => passHash; set => passHash = value; }
         public DateTime BirthdTime { get => birthdTime; set => birthdTime = value; }
+        public string Status { get => status; set => status = value; }
     }
 }
