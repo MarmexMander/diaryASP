@@ -13,7 +13,7 @@ namespace WorkDiary.Models
 
             if (!context.Users.Any())
             {
-                context.Objects.AddRange(
+                context.Users.AddRange(
                     new User
                     {
                         FullName = "Root Admin",
