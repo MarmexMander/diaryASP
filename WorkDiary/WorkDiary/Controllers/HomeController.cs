@@ -26,17 +26,20 @@ namespace WorkDiary.Controllers
 
             return result.ToString();
         }
-
+        User GetUserById(int id)
+        {
+            return db.Find(typeof(Models.User), id) as User;
+        }
         public IActionResult Index()
         {
             if (!Request.Cookies.ContainsKey("user"))
                 return RedirectToAction("Login");
             else 
             {
-                User user = db.Find(typeof(Models.User), new object[] { (object)int.Parse(Request.Cookies["user"]) }) as User;
+                User user = GetUserById(int.Parse(Request.Cookies["user"]));
                 switch (user.AccessLevel)
                 {
-                    case 0: throw new Exception("Has not user info view"); break;//return View(...);
+                    case 0: return View("UserInfo", user); break;
                     case 1: throw new Exception("Has not moder gui view"); break;//return View(...);
                     case 2: throw new Exception("Has not admin gui view"); break;//return View(...);
                     default : return RedirectToAction("Logout");
