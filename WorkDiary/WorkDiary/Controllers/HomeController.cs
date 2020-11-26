@@ -60,6 +60,10 @@ namespace WorkDiary.Controllers
                     return View();
             }
         }
-
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("user");
+            return RedirectToAction("Index");
+        }
     }
 }
