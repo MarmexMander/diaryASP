@@ -16,12 +16,15 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Email)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AccessLevel)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AccessLevel)
-        </dd>
+        @if (@ViewBag.AccessLevel == 2)
+        {
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.AccessLevel)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.AccessLevel)
+            </dd>
+        }
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FullName)
         </dt>
