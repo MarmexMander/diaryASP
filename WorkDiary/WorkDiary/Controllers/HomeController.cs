@@ -29,14 +29,24 @@ namespace WorkDiary.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (!Request.Cookies.ContainsKey("user"))
+                return RedirectToAction("Login");
+            else 
+            {
+                User user = db.Find(typeof(Models.User), new object[] { (object)int.Parse(Request.Cookies["user"]) }) as User;
+                switch (user.AccessLevel)
+                {
+                    case 0: throw new Exception("Has not user info view"); break;//return View(...);
+                    case 1: throw new Exception("Has not moder gui view"); break;//return View(...);
+                    case 2: throw new Exception("Has not admin gui view"); break;//return View(...);
+                    default : return RedirectToAction("Logout");
+                }
+            }
         }
 
         [HttpGet]
-        public IActionResult Login(int? id)
+        public IActionResult Login()
         {
-            if (id == null) return RedirectToAction("Index");
-            ViewBag.ProductsId = id;
             return View();
         }
 
