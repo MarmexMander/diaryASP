@@ -22,5 +22,11 @@ namespace WorkDiary.Models
         public string PassHash { get => passHash; set => passHash = value; }
         public DateTime BirthdTime { get => birthdTime; set => birthdTime = value; }
         public string Status { get => status; set => status = value; }
+        //
+        public int getSalary ()
+        {
+            //FINISH IT!!!!...........................................
+            return 0;
+        }
     }
 }
