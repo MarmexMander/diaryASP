@@ -40,8 +40,8 @@ namespace WorkDiary.Controllers
                 switch (user.AccessLevel)
                 {
                     case 0: return View("UserInfo", user); break;
-                    case 1: throw new Exception("Has not moder gui view"); break;//return View(...);
-                    case 2: throw new Exception("Has not admin gui view"); break;//return View(...);
+                    case 1:
+                    case 2: return View("AllUsers", db.Users); break;
                     default : return RedirectToAction("Logout");
                 }
             }
