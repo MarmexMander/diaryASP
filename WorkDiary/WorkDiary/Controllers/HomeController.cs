@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,7 +17,7 @@ namespace WorkDiary.Controllers
         {
             db = context;
         }
-        public static string HashToHex(this byte[] bytes, bool upperCase)
+        private string HashToHex(byte[] bytes, bool upperCase)
         {
             StringBuilder result = new StringBuilder(bytes.Length * 2);
 
