@@ -16,28 +16,49 @@ namespace WorkDiary.Controllers
         {
             db = context;
         }
+        public static string HashToHex(this byte[] bytes, bool upperCase)
+        {
+            StringBuilder result = new StringBuilder(bytes.Length * 2);
 
-        //public IActionResult Index()
-        //{
-        //    return View(db.Product.ToList());
-        //}
+            for (int i = 0; i < bytes.Length; i++)
+                result.Append(bytes[i].ToString(upperCase ? "X2" : "x2"));
 
-        //[HttpGet]
-        //public IActionResult Buy(int? id)
-        //{
-        //    if (id == null) return RedirectToAction("Index");
-        //    ViewBag.ProductsId = id;
-        //    return View();
-        //}
+            return result.ToString();
+        }
 
-        //[HttpPost]
-        //public string Buy(Order order)
-        //{
-        //    db.Orders.Add(order);
-        //    // сохраняем в бд все изменения
-        //    db.SaveChanges();
-        //    return "Спасибо, " + order.User + ", за покупку!";
-        //}
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Login(int? id)
+        {
+            if (id == null) return RedirectToAction("Index");
+            ViewBag.ProductsId = id;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(string Email, string PassHash)
+        {
+            if (Email == null || PassHash == null)
+                return View();
+            else
+            {
+                System.Security.Cryptography.HashAlgorithm hashAlg = System.Security.Cryptography.SHA256.Create();
+                byte[] hash = hashAlg.ComputeHash(PassHash.Select(c => (byte)c).ToArray());
+                PassHash = HashToHex(hash, false);
+                User user = db.Users.Where(u=>u.Email == Email).First();
+                if (user.PassHash == PassHash)
+                {
+                    Response.Cookies.Append("user", user.Id.ToString());
+                    return RedirectToAction("Index");
+                }
+                else
+                    return View();
+            }
+        }
 
     }
 }
