@@ -41,10 +41,19 @@ namespace WorkDiary.Controllers
                 {
                     case 0: return View("UserInfo", user); break;
                     case 1:
-                    case 2: return View("AllUsers", db.Users); break;
+                    case 2: return View("UserList", db.Users); break;
                     default : return RedirectToAction("Logout");
                 }
             }
+        }
+
+        public IActionResult UserList(IEnumerable<User> users)
+        {
+            //TODO: Add adding access level to view bag
+            if (GetUserById(int.Parse(Request.Cookies["user"])).AccessLevel > 0)
+                return View("AllUsers", users);
+            else 
+                return RedirectToAction("Index");
         }
 
         [HttpGet]
