@@ -1,5 +1,3 @@
-using System;
-
 namespace WorkDiary.Models
 {
     public class ErrorViewModel

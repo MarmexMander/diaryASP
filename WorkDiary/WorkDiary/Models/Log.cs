@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WorkDiary.Models
 {
     public class Log
     {
-        int id;
-        int? userId;
-        DateTime date;
-        string _event;
+        private int id;
+        private int? userId;
+        private DateTime date;
+        private string _event;
 
         public int Id { get => id; set => id = value; }
         public int? UserId { get => userId; set => userId = value; }

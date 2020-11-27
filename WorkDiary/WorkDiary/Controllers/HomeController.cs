@@ -1,23 +1,20 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using WorkDiary.Models;
 
 namespace WorkDiary.Controllers
 {
     public class HomeController : Controller
     {
-        DiaryContext db;
+        private DiaryContext db;
+
         public HomeController(DiaryContext context)
         {
             db = context;
         }
+
         private string HashToHex(byte[] bytes, bool upperCase)
         {
             StringBuilder result = new StringBuilder(bytes.Length * 2);
@@ -27,15 +24,17 @@ namespace WorkDiary.Controllers
 
             return result.ToString();
         }
-        User GetUserById(int id)
+
+        private User GetUserById(int id)
         {
             return db.Find(typeof(Models.User), id) as User;
         }
+
         public IActionResult Index()
         {
             if (!Request.Cookies.ContainsKey("user"))
                 return RedirectToAction("Login");
-            else 
+            else
             {
                 User user = GetUserById(int.Parse(Request.Cookies["user"]));
                 switch (user.AccessLevel)
@@ -43,7 +42,7 @@ namespace WorkDiary.Controllers
                     case 0: return View("UserInfo", user); break;
                     case 1:
                     case 2: return UserList(db.Users); break;
-                    default : return RedirectToAction("Logout");
+                    default: return RedirectToAction("Logout");
                 }
             }
         }
@@ -53,7 +52,7 @@ namespace WorkDiary.Controllers
             //TODO: Add adding access level to view bag
             if (GetUserById(int.Parse(Request.Cookies["user"])).AccessLevel > 0)
                 return View("AllUsers", users);
-            else 
+            else
                 return RedirectToAction("Index");
         }
 
@@ -73,7 +72,7 @@ namespace WorkDiary.Controllers
                 System.Security.Cryptography.HashAlgorithm hashAlg = System.Security.Cryptography.SHA256.Create();
                 byte[] hash = hashAlg.ComputeHash(PassHash.Select(c => (byte)c).ToArray());
                 PassHash = HashToHex(hash, true);
-                User user = db.Users.Where(u=>u.Email == Email).First();
+                User user = db.Users.Where(u => u.Email == Email).First();
                 if (user.PassHash == PassHash)
                 {
                     Response.Cookies.Append("user", user.Id.ToString());
@@ -83,6 +82,7 @@ namespace WorkDiary.Controllers
                     return View();
             }
         }
+
         public IActionResult Logout()
         {
             Response.Cookies.Delete("user");

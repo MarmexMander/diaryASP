@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace WorkDiary.Models
 {
@@ -21,7 +18,7 @@ namespace WorkDiary.Models
                         AccessLevel = 3,
                         Email = "qwerty@qwe.asd"
                     }
-                ) ;
+                );
                 context.SaveChanges();
             }
         }

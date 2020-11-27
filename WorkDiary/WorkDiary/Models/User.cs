@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WorkDiary.Models
 {
     public class User
     {
-        int id;
-        string fullName;
-        string email;
-        string passHash;
-        DateTime birthdTime;
-        int accessLevel;
-        string status;
+        private int id;
+        private string fullName;
+        private string email;
+        private string passHash;
+        private DateTime birthdTime;
+        private int accessLevel;
+        private string status;
 
         public string Email { get => email; set => email = value; }
         public int AccessLevel { get => accessLevel; set => accessLevel = value; }
@@ -22,8 +19,9 @@ namespace WorkDiary.Models
         public string PassHash { get => passHash; set => passHash = value; }
         public DateTime BirthdTime { get => birthdTime; set => birthdTime = value; }
         public string Status { get => status; set => status = value; }
+
         //
-        public int getSalary ()
+        public int getSalary()
         {
             //FINISH IT!!!!...........................................
             return 0;
