@@ -16,8 +16,8 @@ namespace WorkDiary.Models
         public DiaryContext(DbContextOptions<DiaryContext> options)
             : base(options)
         {
-
             Database.EnsureCreated();
+            SampleData.Initialize(this);
         }
     }
 }
