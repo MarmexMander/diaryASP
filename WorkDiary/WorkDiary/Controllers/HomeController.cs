@@ -42,7 +42,7 @@ namespace WorkDiary.Controllers
                 {
                     case 0: return View("UserInfo", user); break;
                     case 1:
-                    case 2: return View("UserList", db.Users); break;
+                    case 2: return UserList(db.Users); break;
                     default : return RedirectToAction("Logout");
                 }
             }
@@ -72,7 +72,7 @@ namespace WorkDiary.Controllers
             {
                 System.Security.Cryptography.HashAlgorithm hashAlg = System.Security.Cryptography.SHA256.Create();
                 byte[] hash = hashAlg.ComputeHash(PassHash.Select(c => (byte)c).ToArray());
-                PassHash = HashToHex(hash, false);
+                PassHash = HashToHex(hash, true);
                 User user = db.Users.Where(u=>u.Email == Email).First();
                 if (user.PassHash == PassHash)
                 {
