@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using WorkDiary.Models;
 
 namespace WorkDiary.Controllers
@@ -9,15 +10,17 @@ namespace WorkDiary.Controllers
     public class HomeController : Controller
     {
         private readonly DiaryContext db;
-        private User CurUser => GetUserById(int.Parse(Request.Cookies["user"]));
+
         public HomeController(DiaryContext context)
         {
             db = context;
         }
 
+        private User CurUser => GetUserById(int.Parse(Request.Cookies["user"]));
+
         private string HashToHex(byte[] bytes, bool upperCase)
         {
-            StringBuilder result = new StringBuilder(bytes.Length * 2);
+            var result = new StringBuilder(bytes.Length * 2);
 
             foreach (var t in bytes)
                 result.Append(t.ToString(upperCase ? "X2" : "x2"));
@@ -29,10 +32,12 @@ namespace WorkDiary.Controllers
         {
             db.Logs.Add(new Log(usrId, message));
         }
+
         private User GetUserById(int id)
         {
             return db.Find(typeof(User), id) as User;
         }
+
         private void DeleteUserById(int id)
         {
             db.Remove(GetUserById(id));
@@ -42,16 +47,12 @@ namespace WorkDiary.Controllers
         {
             if (!Request.Cookies.ContainsKey("user"))
                 return RedirectToAction("Login");
-            else
+            switch (CurUser.AccessLevel)
             {
-                
-                switch (CurUser.AccessLevel)
-                {
-                    case 0: return View("UserInfo", CurUser);
-                    case 1:
-                    case 2: return UserList(db.Users);
-                    default: return RedirectToAction("Logout");
-                }
+                case 0: return View("UserInfo", CurUser);
+                case 1:
+                case 2: return UserList(db.Users);
+                default: return RedirectToAction("Logout");
             }
         }
 
@@ -59,8 +60,7 @@ namespace WorkDiary.Controllers
         {
             if (CurUser.AccessLevel > 0)
                 return View("AllUsers", users);
-            else
-                return RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -72,23 +72,20 @@ namespace WorkDiary.Controllers
         [HttpPost]
         public IActionResult Login(string email, string passHash)
         {
-            if (email == null || passHash == null)
-                return View();
-            else
+            if (email == null || passHash == null) return View();
+
+            HashAlgorithm hashAlg = SHA256.Create();
+            var hash = hashAlg.ComputeHash(passHash.Select(c => (byte) c).ToArray());
+            passHash = HashToHex(hash, true);
+            var user = db.Users.First(u => u.Email == email);
+            if (user.PassHash == passHash)
             {
-                System.Security.Cryptography.HashAlgorithm hashAlg = System.Security.Cryptography.SHA256.Create();
-                byte[] hash = hashAlg.ComputeHash(passHash.Select(c => (byte)c).ToArray());
-                passHash = HashToHex(hash, true);
-                User user = db.Users.First(u => u.Email == email);
-                if (user.PassHash == passHash)
-                {
-                    Response.Cookies.Append("user", user.Id.ToString());
-                    AddLog("Logged In", user.Id);
-                    return RedirectToAction("Index");
-                }
-                else
-                    return View();
+                Response.Cookies.Append("user", user.Id.ToString());
+                AddLog("Logged In", user.Id);
+                return RedirectToAction("Index");
             }
+
+            return View();
         }
 
         public IActionResult EditUser(int id)
@@ -96,8 +93,7 @@ namespace WorkDiary.Controllers
             ViewBag.AccessLevel = CurUser.AccessLevel;
             if (CurUser.AccessLevel > 0)
                 return View(GetUserById(id));
-            else
-                return RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
 
         public IActionResult DeleteUser(int id)
@@ -106,6 +102,7 @@ namespace WorkDiary.Controllers
                 DeleteUserById(id);
             return RedirectToAction("Index");
         }
+
         public IActionResult Logout()
         {
             Response.Cookies.Delete("user");
