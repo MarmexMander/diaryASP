@@ -39,9 +39,9 @@ namespace WorkDiary.Controllers
                 User user = GetUserById(int.Parse(Request.Cookies["user"]));
                 switch (user.AccessLevel)
                 {
-                    case 0: return View("UserInfo", user); break;
+                    case 0: return View("UserInfo", user); 
                     case 1:
-                    case 2: return UserList(db.Users); break;
+                    case 2: return UserList(db.Users); 
                     default: return RedirectToAction("Logout");
                 }
             }
@@ -49,8 +49,8 @@ namespace WorkDiary.Controllers
 
         public IActionResult UserList(IEnumerable<User> users)
         {
-            //TODO: Add adding access level to view bag
-            if (GetUserById(int.Parse(Request.Cookies["user"])).AccessLevel > 0)
+            ViewBag.UserAccessLevel = GetUserById(int.Parse(Request.Cookies["user"])).AccessLevel;
+            if (ViewBag.UserAccessLevel > 0)
                 return View("AllUsers", users);
             else
                 return RedirectToAction("Index");
@@ -85,7 +85,7 @@ namespace WorkDiary.Controllers
 
         public IActionResult EditUser(int id)
         {
-            return View(db.Users.Where(u=>u.Id == id).First());
+            return View(GetUserById(id));
         }
 
         public IActionResult Logout()
