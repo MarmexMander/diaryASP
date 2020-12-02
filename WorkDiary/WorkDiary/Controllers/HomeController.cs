@@ -29,6 +29,10 @@ namespace WorkDiary.Controllers
         {
             return db.Find(typeof(Models.User), id) as User;
         }
+        private void DeleteUser(int id)
+        {
+            db.Remove(GetUserById(id));
+        }
 
         public IActionResult Index()
         {
@@ -39,9 +43,9 @@ namespace WorkDiary.Controllers
                 User user = GetUserById(int.Parse(Request.Cookies["user"]));
                 switch (user.AccessLevel)
                 {
-                    case 0: return View("UserInfo", user); 
+                    case 0: return View("UserInfo", user);
                     case 1:
-                    case 2: return UserList(db.Users); 
+                    case 2: return UserList(db.Users);
                     default: return RedirectToAction("Logout");
                 }
             }
@@ -49,7 +53,6 @@ namespace WorkDiary.Controllers
 
         public IActionResult UserList(IEnumerable<User> users)
         {
-            ViewBag.UserAccessLevel = GetUserById(int.Parse(Request.Cookies["user"])).AccessLevel;
             if (ViewBag.UserAccessLevel > 0)
                 return View("AllUsers", users);
             else
@@ -76,6 +79,7 @@ namespace WorkDiary.Controllers
                 if (user.PassHash == PassHash)
                 {
                     Response.Cookies.Append("user", user.Id.ToString());
+                    ViewBag.UserAccessLevel = GetUserById(int.Parse(Request.Cookies["user"])).AccessLevel;
                     return RedirectToAction("Index");
                 }
                 else
@@ -85,9 +89,18 @@ namespace WorkDiary.Controllers
 
         public IActionResult EditUser(int id)
         {
-            return View(GetUserById(id));
+            if (ViewBag.UserAccessLevel > 0)
+                return View(GetUserById(id));
+            else
+                return RedirectToAction("Index");
         }
 
+        public IActionResult Delete(int id)
+        {
+            if (ViewBag.UserAccessLevel > 1)
+                DeleteUser(id);
+            return RedirectToAction("Index");
+        }
         public IActionResult Logout()
         {
             Response.Cookies.Delete("user");
