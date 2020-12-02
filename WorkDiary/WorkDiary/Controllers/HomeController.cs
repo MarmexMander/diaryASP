@@ -83,6 +83,11 @@ namespace WorkDiary.Controllers
             }
         }
 
+        public IActionResult EditUser(int id)
+        {
+            return View(db.Users.Where(u=>u.Id == id).First());
+        }
+
         public IActionResult Logout()
         {
             Response.Cookies.Delete("user");
