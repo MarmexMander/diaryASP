@@ -13,5 +13,12 @@ namespace WorkDiary.Models
         public int? UserId { get => userId; set => userId = value; }
         public DateTime Date { get => date; set => date = value; }
         public string Event { get => _event; set => _event = value; }
+
+        public Log(int? userId, string @event)
+        {
+            this.userId = userId;
+            date = DateTime.Now;
+            _event = @event;
+        }
     }
 }

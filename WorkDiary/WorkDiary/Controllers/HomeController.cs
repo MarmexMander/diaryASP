@@ -25,6 +25,10 @@ namespace WorkDiary.Controllers
             return result.ToString();
         }
 
+        private void AddLog(string message, int? usrId = null)
+        {
+            db.Logs.Add(new Log(usrId, message));
+        }
         private User GetUserById(int id)
         {
             return db.Find(typeof(Models.User), id) as User;
@@ -75,11 +79,12 @@ namespace WorkDiary.Controllers
                 System.Security.Cryptography.HashAlgorithm hashAlg = System.Security.Cryptography.SHA256.Create();
                 byte[] hash = hashAlg.ComputeHash(PassHash.Select(c => (byte)c).ToArray());
                 PassHash = HashToHex(hash, true);
-                User user = db.Users.Where(u => u.Email == Email).First();
+                User user = db.Users.First(u => u.Email == Email);
                 if (user.PassHash == PassHash)
                 {
                     Response.Cookies.Append("user", user.Id.ToString());
                     ViewBag.UserAccessLevel = GetUserById(int.Parse(Request.Cookies["user"])).AccessLevel;
+                    AddLog("Logged In", user.Id);
                     return RedirectToAction("Index");
                 }
                 else
