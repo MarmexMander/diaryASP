@@ -29,7 +29,7 @@ namespace WorkDiary.Controllers
         {
             return db.Find(typeof(Models.User), id) as User;
         }
-        private void DeleteUser(int id)
+        private void DeleteUserById(int id)
         {
             db.Remove(GetUserById(id));
         }
@@ -95,10 +95,10 @@ namespace WorkDiary.Controllers
                 return RedirectToAction("Index");
         }
 
-        public IActionResult Delete(int id)
+        public IActionResult DeleteUser(int id)
         {
             if (ViewBag.UserAccessLevel > 1)
-                DeleteUser(id);
+                DeleteUserById(id);
             return RedirectToAction("Index");
         }
         public IActionResult Logout()
