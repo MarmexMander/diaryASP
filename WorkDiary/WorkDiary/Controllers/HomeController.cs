@@ -8,8 +8,8 @@ namespace WorkDiary.Controllers
 {
     public class HomeController : Controller
     {
-        private DiaryContext db;
-
+        private readonly DiaryContext db;
+        private User CurUser => GetUserById(int.Parse(Request.Cookies["user"]));
         public HomeController(DiaryContext context)
         {
             db = context;
@@ -19,8 +19,8 @@ namespace WorkDiary.Controllers
         {
             StringBuilder result = new StringBuilder(bytes.Length * 2);
 
-            for (int i = 0; i < bytes.Length; i++)
-                result.Append(bytes[i].ToString(upperCase ? "X2" : "x2"));
+            foreach (var t in bytes)
+                result.Append(t.ToString(upperCase ? "X2" : "x2"));
 
             return result.ToString();
         }
@@ -31,7 +31,7 @@ namespace WorkDiary.Controllers
         }
         private User GetUserById(int id)
         {
-            return db.Find(typeof(Models.User), id) as User;
+            return db.Find(typeof(User), id) as User;
         }
         private void DeleteUserById(int id)
         {
@@ -44,10 +44,10 @@ namespace WorkDiary.Controllers
                 return RedirectToAction("Login");
             else
             {
-                User user = GetUserById(int.Parse(Request.Cookies["user"]));
-                switch (user.AccessLevel)
+                
+                switch (CurUser.AccessLevel)
                 {
-                    case 0: return View("UserInfo", user);
+                    case 0: return View("UserInfo", CurUser);
                     case 1:
                     case 2: return UserList(db.Users);
                     default: return RedirectToAction("Logout");
@@ -57,7 +57,7 @@ namespace WorkDiary.Controllers
 
         public IActionResult UserList(IEnumerable<User> users)
         {
-            if (ViewBag.UserAccessLevel > 0)
+            if (CurUser.AccessLevel > 0)
                 return View("AllUsers", users);
             else
                 return RedirectToAction("Index");
@@ -70,20 +70,19 @@ namespace WorkDiary.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(string Email, string PassHash)
+        public IActionResult Login(string email, string passHash)
         {
-            if (Email == null || PassHash == null)
+            if (email == null || passHash == null)
                 return View();
             else
             {
                 System.Security.Cryptography.HashAlgorithm hashAlg = System.Security.Cryptography.SHA256.Create();
-                byte[] hash = hashAlg.ComputeHash(PassHash.Select(c => (byte)c).ToArray());
-                PassHash = HashToHex(hash, true);
-                User user = db.Users.First(u => u.Email == Email);
-                if (user.PassHash == PassHash)
+                byte[] hash = hashAlg.ComputeHash(passHash.Select(c => (byte)c).ToArray());
+                passHash = HashToHex(hash, true);
+                User user = db.Users.First(u => u.Email == email);
+                if (user.PassHash == passHash)
                 {
                     Response.Cookies.Append("user", user.Id.ToString());
-                    ViewBag.UserAccessLevel = GetUserById(int.Parse(Request.Cookies["user"])).AccessLevel;
                     AddLog("Logged In", user.Id);
                     return RedirectToAction("Index");
                 }
@@ -94,7 +93,8 @@ namespace WorkDiary.Controllers
 
         public IActionResult EditUser(int id)
         {
-            if (ViewBag.UserAccessLevel > 0)
+            ViewBag.AccessLevel = CurUser.AccessLevel;
+            if (CurUser.AccessLevel > 0)
                 return View(GetUserById(id));
             else
                 return RedirectToAction("Index");
@@ -102,7 +102,7 @@ namespace WorkDiary.Controllers
 
         public IActionResult DeleteUser(int id)
         {
-            if (ViewBag.UserAccessLevel > 1 && int.Parse(Request.Cookies["user"]) != id)
+            if (CurUser.AccessLevel > 1 && int.Parse(Request.Cookies["user"]) != id)
                 DeleteUserById(id);
             return RedirectToAction("Index");
         }
