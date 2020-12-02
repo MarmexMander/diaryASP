@@ -97,7 +97,7 @@ namespace WorkDiary.Controllers
 
         public IActionResult DeleteUser(int id)
         {
-            if (ViewBag.UserAccessLevel > 1)
+            if (ViewBag.UserAccessLevel > 1 && int.Parse(Request.Cookies["user"]) != id)
                 DeleteUserById(id);
             return RedirectToAction("Index");
         }
