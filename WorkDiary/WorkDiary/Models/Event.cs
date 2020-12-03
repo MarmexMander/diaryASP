@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WorkDiary.Models
 {
@@ -14,12 +11,14 @@ namespace WorkDiary.Models
         private float durationEvent;
         private DateTime dateTimeEvent;
         private List<User> users;
-
+        private List<User> showedUpUsers;
+        
         public int Id { get => id; set => id = value; }
         public string NameEvent { get => nameEvent; set => nameEvent = value; }
         public string TypeEvent { get => typeEvent; set => typeEvent = value; }
         public float DurationEvent { get => durationEvent; set => durationEvent = value; }
         public DateTime DateTimeEvent { get => dateTimeEvent; set => dateTimeEvent = value; }
         public List<User> Users { get => users; set => users = value; }
+        public List<User> ShowedUpUsers { get => showedUpUsers; set => showedUpUsers = value; }
     }
 }

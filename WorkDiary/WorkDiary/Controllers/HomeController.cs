@@ -110,14 +110,14 @@ namespace WorkDiary.Controllers
             Response.Cookies.Delete("user");
             return RedirectToAction("Index");
         }
-        //TODO: User info action
         public IActionResult UserInfo(User user)
         {
+            //
             return View(user);
         }
-        //TODO: User edit action
-        //TODO: Event list action
-        //TODO: Event create action
+        //TODO: User edit POST action
+        //TODO: Message list action
+        //TODO: Message create action
         //TODO: User create action
     }
 }

@@ -4,19 +4,19 @@ namespace WorkDiary.Models
 {
     public class Log
     {
-        public Log(int? userId, string @event)
+        public Log(User userId, string message)
         {
-            this.UserId = userId;
+            this.User = userId;
             Date = DateTime.Now;
-            this.Event = @event;
+            this.Message = message;
         }
 
         public int Id { get; set; }
 
-        public int? UserId { get; set; }
+        public User User { get; set; }
 
         public DateTime Date { get; set; }
-
-        public string Event { get; set; }
+        
+        public string Message { get; set; }
     }
 }
