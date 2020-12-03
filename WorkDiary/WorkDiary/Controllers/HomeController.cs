@@ -30,12 +30,14 @@ namespace WorkDiary.Controllers
 
         private void AddLog(string message, int? usrId = null)
         {
-            db.Logs.Add(new Log(usrId, message));
+            db.Logs.Add(new Log(GetUserById(usrId), message));
             db.SaveChangesAsync().Start();
         }
 
-        private User GetUserById(int id)
+        private User GetUserById(int? id)
         {
+            if (id==null)
+                return null;
             return db.Find(typeof(User), id) as User;
         }
 
@@ -110,14 +112,19 @@ namespace WorkDiary.Controllers
             Response.Cookies.Delete("user");
             return RedirectToAction("Index");
         }
+
         public IActionResult UserInfo(User user)
         {
             //
             return View(user);
         }
+
         //TODO: User edit POST action
-        //TODO: Message list action
-        //TODO: Message create action
+        public IActionResult EventList(IEnumerable<Event> events)
+        {
+            return View("AllEvents",events);
+        }
+        //TODO: Event create action
         //TODO: User create action
     }
 }
