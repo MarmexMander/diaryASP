@@ -30,8 +30,8 @@ namespace WorkDiary.Controllers
 
         private void AddLog(string message, int? usrId = null)
         {
-            db.Logs.Add(new Log(GetUserById(usrId), message));
-            db.SaveChangesAsync().Start();
+            db.Logs.Add(new Log(message, GetUserById(usrId)));
+            db.SaveChanges();
         }
 
         private User GetUserById(int? id)
@@ -48,7 +48,7 @@ namespace WorkDiary.Controllers
 
         public IActionResult Index()
         {
-            if (!Request.Cookies.ContainsKey("user"))
+            if (!Request.Cookies.ContainsKey("user"))//BUG: Cookies don`t saving
                 return RedirectToAction("Login");
             switch (CurUser.AccessLevel)
             {
@@ -135,7 +135,7 @@ namespace WorkDiary.Controllers
             }
 
             db.Users.Update(user);
-            db.SaveChangesAsync().Start();
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
         public IActionResult EventList(IEnumerable<Event> events)
@@ -154,7 +154,7 @@ namespace WorkDiary.Controllers
             var hash = hashAlg.ComputeHash(user.PassHash.Select(c => (byte)c).ToArray());
             user.PassHash = HashToHex(hash, true);
             db.Users.Add(user);
-            db.SaveChangesAsync().Start();
+            db.SaveChanges();
             return View("Index");
         }
         
@@ -168,7 +168,7 @@ namespace WorkDiary.Controllers
         public IActionResult CreateEvent(Event @event)
         {
             db.Events.Add(@event);
-            db.SaveChangesAsync().Start();
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
         

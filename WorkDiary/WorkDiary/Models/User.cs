@@ -14,6 +14,8 @@ namespace WorkDiary.Models
         private int accessLevel;
         private string status;
         private List<Event> events;
+        private List<Event> visitedEvents;
+
         private Position position;
         
         public string Email { get => email; set => email = value; }
@@ -24,6 +26,7 @@ namespace WorkDiary.Models
         public DateTime BirthdTime { get => birthdTime; set => birthdTime = value; }
         public string Status { get => status; set => status = value; }
         public List<Event> Events { get => events; set => events = value; }
+        public List<Event> VisitedEvents { get => visitedEvents; set => visitedEvents = value; }
         public Position Position { get => position; set => position = value; }
 
         //

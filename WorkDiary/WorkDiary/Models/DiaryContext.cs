@@ -16,5 +16,11 @@ namespace WorkDiary.Models
             Database.EnsureCreated();
             SampleData.Initialize(this);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Event>().HasMany(e => e.Users).WithMany(u => u.Events);
+            modelBuilder.Entity<Event>().HasMany(e => e.ShowedUpUsers).WithMany(u=>u.VisitedEvents);
+        }
     }
 }

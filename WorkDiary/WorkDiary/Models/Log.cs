@@ -4,9 +4,15 @@ namespace WorkDiary.Models
 {
     public class Log
     {
-        public Log(User userId, string message)
+        public Log(string message, User user)
         {
-            this.User = userId;
+            this.User = user;
+            Date = DateTime.Now;
+            this.Message = message;
+        }
+        public Log(string message)
+        {
+            this.User = null;
             Date = DateTime.Now;
             this.Message = message;
         }
