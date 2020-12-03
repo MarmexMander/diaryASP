@@ -96,7 +96,12 @@ namespace WorkDiary.Controllers
         {
             ViewBag.AccessLevel = CurUser.AccessLevel;
             if (CurUser.AccessLevel > 0)
-                return View(GetUserById(id));
+            {
+                var user = GetUserById(id);
+                user.PassHash = "";
+                return View(user);
+            }
+
             return RedirectToAction("Index");
         }
 
@@ -119,12 +124,39 @@ namespace WorkDiary.Controllers
             return View(user);
         }
 
-        //TODO: User edit POST action
+        [HttpPost]
+        public IActionResult EditUser(User user)
+        {
+            if (user.PassHash != "")
+            {
+                HashAlgorithm hashAlg = SHA256.Create();
+                var hash = hashAlg.ComputeHash(user.PassHash.Select(c => (byte)c).ToArray());
+                user.PassHash = HashToHex(hash, true);
+            }
+
+            db.Users.Update(user);
+            db.SaveChangesAsync().Start();
+            return RedirectToAction("Index");
+        }
         public IActionResult EventList(IEnumerable<Event> events)
         {
             return View("AllEvents",events);
         }
+        [HttpGet]
+        public IActionResult CreateUser()
+        {
+            return View("NewUser");
+        }
+        [HttpPost]
+        public IActionResult CreateUser(User user)
+        {
+            HashAlgorithm hashAlg = SHA256.Create();
+            var hash = hashAlg.ComputeHash(user.PassHash.Select(c => (byte)c).ToArray());
+            user.PassHash = HashToHex(hash, true);
+            db.Users.Add(user);
+            db.SaveChangesAsync().Start();
+            return View("Index");
+        }
         //TODO: Event create action
-        //TODO: User create action
     }
 }
