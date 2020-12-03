@@ -13,14 +13,13 @@ namespace WorkDiary.Models
         private string typeEvent;
         private float durationEvent;
         private DateTime dateTimeEvent;
+        private List<User> users;
 
         public int Id { get => id; set => id = value; }
         public string NameEvent { get => nameEvent; set => nameEvent = value; }
         public string TypeEvent { get => typeEvent; set => typeEvent = value; }
         public float DurationEvent { get => durationEvent; set => durationEvent = value; }
         public DateTime DateTimeEvent { get => dateTimeEvent; set => dateTimeEvent = value; }
-        [NotMapped]
-        public IEnumerable<User> PropertyUsers;
-
+        public List<User> Users { get => users; set => users = value; }
     }
 }
