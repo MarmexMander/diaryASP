@@ -31,6 +31,7 @@ namespace WorkDiary.Controllers
         private void AddLog(string message, int? usrId = null)
         {
             db.Logs.Add(new Log(usrId, message));
+            db.SaveChangesAsync().Start();
         }
 
         private User GetUserById(int id)
@@ -58,6 +59,7 @@ namespace WorkDiary.Controllers
 
         public IActionResult UserList(IEnumerable<User> users)
         {
+            ViewBag.AccessLevel = CurUser.AccessLevel;
             if (CurUser.AccessLevel > 0)
                 return View("AllUsers", users);
             return RedirectToAction("Index");
@@ -108,5 +110,14 @@ namespace WorkDiary.Controllers
             Response.Cookies.Delete("user");
             return RedirectToAction("Index");
         }
+        //TODO: User info action
+        public IActionResult UserInfo(User user)
+        {
+            return View(user);
+        }
+        //TODO: User edit action
+        //TODO: Event list action
+        //TODO: Event create action
+        //TODO: User create action
     }
 }
