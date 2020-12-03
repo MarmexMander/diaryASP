@@ -157,6 +157,20 @@ namespace WorkDiary.Controllers
             db.SaveChangesAsync().Start();
             return View("Index");
         }
-        //TODO: Event create action
+        
+        [HttpGet]
+        public IActionResult CreateEvent()
+        {
+            return View("NewEvent");
+        }
+
+        [HttpPost]
+        public IActionResult CreateEvent(Event @event)
+        {
+            db.Events.Add(@event);
+            db.SaveChangesAsync().Start();
+            return RedirectToAction("Index");
+        }
+        
     }
-}
+};
