@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using WorkDiary.Models;
 
@@ -13,6 +15,7 @@ namespace WorkDiary.Controllers
 
         public HomeController(DiaryContext context)
         {
+            
             db = context;
         }
 
@@ -41,6 +44,27 @@ namespace WorkDiary.Controllers
             return db.Find(typeof(User), id) as User;
         }
 
+        private double GetUserWage(User user)
+        {
+            double wage = 0;
+            List<Log> userLogs = db.Logs.Where(l=>l.Date.Month == DateTime.Now.Month).ToList();
+            for (var i = 0; i < userLogs.Count; i++)
+            {
+                TimeSpan daySpan;
+                if (userLogs[i + 1].Message == "Logged Out")
+                {
+                    daySpan = userLogs[i].Date - userLogs[i + 1].Date;
+                    i++;
+                }
+                else
+                    daySpan = TimeSpan.FromHours(8);
+
+                wage += user.Position.Wage * daySpan.TotalHours;
+            }
+
+            return wage;
+        }
+
         private void DeleteUserById(int id)
         {
             db.Remove(GetUserById(id));
@@ -61,6 +85,7 @@ namespace WorkDiary.Controllers
 
         public IActionResult UserList(IEnumerable<User> users)
         {
+            
             ViewBag.AccessLevel = CurUser.AccessLevel;
             if (CurUser.AccessLevel > 0)
                 return View("AllUsers", users);
@@ -115,6 +140,7 @@ namespace WorkDiary.Controllers
         public IActionResult Logout()
         {
             Response.Cookies.Delete("user");
+            AddLog("Logged Out", CurUser.Id);
             return RedirectToAction("Index");
         }
 
