@@ -44,7 +44,7 @@ namespace WorkDiary.Controllers
             return db.Find(typeof(User), id) as User;
         }
 
-        private double GetUserWage(User user)
+        private double GetUserWage(User user)//TODO: Throw to ViewBag(For UserInfo)
         {
             double wage = 0;
             List<Log> userLogs = db.Logs.Where(l=>l.Date.Month == DateTime.Now.Month).ToList();
