@@ -48,7 +48,7 @@ namespace WorkDiary.Controllers
 
         public IActionResult Index()
         {
-            if (!Request.Cookies.ContainsKey("user"))//BUG: Cookies don`t saving
+            if (!Request.Cookies.ContainsKey("user"))
                 return RedirectToAction("Login");
             switch (CurUser.AccessLevel)
             {
