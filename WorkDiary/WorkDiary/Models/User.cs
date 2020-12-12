@@ -20,11 +20,16 @@ namespace WorkDiary.Models
 
         private Position position;
         
+        [Required]
         public string Email { get => email; set => email = value; }
+        [Required]
         public int AccessLevel { get => accessLevel; set => accessLevel = value; }
+        [Required]
         public string FullName { get => fullName; set => fullName = value; }
         public int Id { get => id; set => id = value; }
+        [Required]
         public string PassHash { get => passHash; set => passHash = value; }
+        [Required]
         public DateTime BirthdTime { get => birthdTime; set => birthdTime = value; }
         public string Status { get => status; set => status = value; }
         public List<Event> Events { get => events; set => events = value; }
