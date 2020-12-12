@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "AllUsers";
 }
-@Html.ActionLink("Add User", "NewUser") |
+@Html.ActionLink("Add User", "AddUser") |
 
 <table class="table">
     <thead>
@@ -30,33 +30,32 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AccessLevel)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BirthdTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "EditUser", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "UserInfo", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "DeleteUser", new { id = item.Id })
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccessLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthdTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditUser", new {  id=item.Id  }) |
+                @Html.ActionLink("Details", "UserInfo", new {  id=item.Id  }) |
+                @Html.ActionLink("Delete", "DeleteUser", new {  id=item.Id  })
+            </td>
+        </tr>
+}
     </tbody>
 </table>
