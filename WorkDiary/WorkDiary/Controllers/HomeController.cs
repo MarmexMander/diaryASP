@@ -119,6 +119,7 @@ namespace WorkDiary.Controllers
 
         public IActionResult EditUser(int id)
         {
+            ViewBag.Positions = db.Positions.ToList();
             ViewBag.AccessLevel = CurUser.AccessLevel;
             if (CurUser.AccessLevel > 0)
             {
@@ -176,6 +177,7 @@ namespace WorkDiary.Controllers
         [HttpPost]
         public IActionResult CreateUser(User user)
         {
+            ViewBag.Positions = db.Positions.ToList();
             HashAlgorithm hashAlg = SHA256.Create();
             var hash = hashAlg.ComputeHash(user.PassHash.Select(c => (byte)c).ToArray());
             user.PassHash = HashToHex(hash, true);
