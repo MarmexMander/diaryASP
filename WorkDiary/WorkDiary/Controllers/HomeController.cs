@@ -146,7 +146,7 @@ namespace WorkDiary.Controllers
 
         public IActionResult UserInfo(User user)
         {
-            //
+            ViewBag.UserWage = GetUserWage(user);
             return View(user);
         }
 
