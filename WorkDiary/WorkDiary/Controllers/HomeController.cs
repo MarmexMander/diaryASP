@@ -44,7 +44,7 @@ namespace WorkDiary.Controllers
             return db.Find(typeof(User), id) as User;
         }
 
-        private double GetUserWage(User user)//TODO: Throw to ViewBag(For UserInfo)
+        private double GetUserWage(User user)
         {
             double wage = 0;
             List<Log> userLogs = db.Logs.Where(l=>l.Date.Month == DateTime.Now.Month).ToList();
@@ -76,7 +76,7 @@ namespace WorkDiary.Controllers
                 return RedirectToAction("Login");
             switch (CurUser.AccessLevel)
             {
-                case 0: return View("UserInfo", CurUser);
+                case 0: return UserInfo(CurUser);
                 case 1:
                 case 2: return UserList(db.Users);
                 default: return RedirectToAction("Logout");
