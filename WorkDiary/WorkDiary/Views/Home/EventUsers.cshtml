@@ -4,28 +4,25 @@
     ViewData["Title"] = "EventUsers";
 }
 
-<h1>EventUsers</h1>
+<h1>Event Users</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
-        <tr>
+        <tr align="center">
+            <th>
+                ID
+            </th>
             <th>
                 Email
             </th>
             <th>
-                AccessLevel
+                Full Name
             </th>
             <th>
-                FullName
+                Access Level
             </th>
             <th>
-                Id
-            </th>
-            <th>
-                Status
+                Date of Birthd
             </th>
             <th></th>
         </tr>
@@ -35,52 +32,48 @@
         {
             @if (Model.Users.Contains(item))
             {
-                <tr style="background-color:lightgreen">
+                <tr style="background-color:lightgreen" align="left">
                     <td>
-                        @Html.DisplayFor(modelItem => item.Email)
+                        @Html.DisplayFor(modelItem => item.Id)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AccessLevel)
+                    <td align="left">
+                        @Html.DisplayFor(modelItem => item.Email)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.FullName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Id)
+                        @Html.DisplayFor(modelItem => item.AccessLevel)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Status)
+                        @Html.DisplayFor(modelItem => item.BirthdTime)
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        @Html.ActionLink("Details", "UserInfo", new { id = item.Id }) 
                     </td>
                 </tr>
 
             }
             else if (!Model.Users.Contains(item))
             {
-                <tr>
+                <tr align="left">
                     <td>
-                        @Html.DisplayFor(modelItem => item.Email)
+                        @Html.DisplayFor(modelItem => item.Id)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AccessLevel)
+                    <td align="left">
+                        @Html.DisplayFor(modelItem => item.Email)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.FullName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Id)
+                        @Html.DisplayFor(modelItem => item.AccessLevel)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Status)
+                        @Html.DisplayFor(modelItem => item.BirthdTime)
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        @Html.ActionLink("Details", "UserInfo", new { id = item.Id })
                     </td>
                 </tr>
 
