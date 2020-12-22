@@ -9,53 +9,53 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
+            ID
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            Email
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Email)
         </dd>
+        <dt class="col-sm-2">
+            Full Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
         @if (@ViewBag.AccessLevel == 2)
         {
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.AccessLevel)
+                Access Level
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.AccessLevel)
             </dd>
         }
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.BirthdTime)
+            Date of Birthd
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.BirthdTime)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Position)
+            Position
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Position.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayName("Wage")
+            Wage
         </dt>
         <dd class="col-sm-10">
             @{
                 if (ViewBag.UserWage != null)
-                {Html.DisplayText(ViewBag.UserWage.ToString());}
+                { Html.DisplayText(ViewBag.UserWage.ToString()); }
                 else
-                {Html.DisplayText("???");}
+                { Html.DisplayText("???"); }
             }
         </dd>
     </dl>
