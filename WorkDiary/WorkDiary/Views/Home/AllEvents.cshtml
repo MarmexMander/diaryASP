@@ -4,35 +4,35 @@
     ViewData["Title"] = "AllEvents";
 }
 
-<h1>AllMessages</h1>
+<h1>Events</h1>
 
 <p>
-    <a asp-action="CreateEvent">Create New</a>
+    <a asp-action="CreateEvent">Create New Event</a>
 </p>
 <table class="table">
     <thead>
-        <tr>
+        <tr align="center">
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NameEvent)
+               Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TypeEvent)
+                Type
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DurationEvent)
+                Duration
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateTimeEvent)
+                Date
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr align="center">
             <td>
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
