@@ -13,27 +13,22 @@
         <form asp-action="CreateEvent">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NameEvent" class="control-label"></label>
+                <label asp-for="NameEvent" class="control-label">Name</label>
                 <input asp-for="NameEvent" class="form-control" />
                 <span asp-validation-for="NameEvent" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TypeEvent" class="control-label"></label>
+                <label asp-for="TypeEvent" class="control-label">Type</label>
                 <input asp-for="TypeEvent" class="form-control" />
                 <span asp-validation-for="TypeEvent" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DurationEvent" class="control-label"></label>
+                <label asp-for="DurationEvent" class="control-label">Duration</label>
                 <input asp-for="DurationEvent" class="form-control" />
                 <span asp-validation-for="DurationEvent" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateTimeEvent" class="control-label"></label>
+                <label asp-for="DateTimeEvent" class="control-label">Date</label>
                 <input asp-for="DateTimeEvent" class="form-control" />
                 <span asp-validation-for="DateTimeEvent" class="text-danger"></span>
             </div>
