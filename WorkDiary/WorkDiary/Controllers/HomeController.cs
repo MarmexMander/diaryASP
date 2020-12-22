@@ -116,7 +116,6 @@ namespace WorkDiary.Controllers
 
             return View();
         }
-
         public IActionResult EditUser(int id)
         {
             ViewBag.Positions = db.Positions.ToList();
@@ -125,7 +124,7 @@ namespace WorkDiary.Controllers
             {
                 var user = GetUserById(id);
                 user.PassHash = "";
-                return View(user);
+                return View(new Models.UserViewModel(){Model = user, Positions = db.Positions.ToList()});
             }
 
             return RedirectToAction("Index");
@@ -152,16 +151,17 @@ namespace WorkDiary.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditUser(User user)
+        public IActionResult EditUser(UserViewModel userModel)
         {
-            if (user.PassHash != "")
+            
+            if (userModel.Model.PassHash != "")
             {
                 HashAlgorithm hashAlg = SHA256.Create();
-                var hash = hashAlg.ComputeHash(user.PassHash.Select(c => (byte)c).ToArray());
-                user.PassHash = HashToHex(hash, true);
+                var hash = hashAlg.ComputeHash(userModel.Model.PassHash.Select(c => (byte)c).ToArray());
+                userModel.Model.PassHash = HashToHex(hash, true);
             }
 
-            db.Users.Update(user);
+            db.Users.Update(userModel.Model);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -172,16 +172,17 @@ namespace WorkDiary.Controllers
         [HttpGet]
         public IActionResult CreateUser()
         {
-            return View("NewUser");
+            ViewBag.Positions = db.Positions.ToList();
+            return View("NewUser", new Models.UserViewModel(){Positions = db.Positions.ToList()});
         }
         [HttpPost]
-        public IActionResult CreateUser(User user)
+        public IActionResult CreateUser(UserViewModel userModel)
         {
             ViewBag.Positions = db.Positions.ToList();
             HashAlgorithm hashAlg = SHA256.Create();
-            var hash = hashAlg.ComputeHash(user.PassHash.Select(c => (byte)c).ToArray());
-            user.PassHash = HashToHex(hash, true);
-            db.Users.Add(user);
+            var hash = hashAlg.ComputeHash(userModel.Model.PassHash.Select(c => (byte)c).ToArray());
+            userModel.Model.PassHash = HashToHex(hash, true);
+            db.Users.Add(userModel.Model);
             db.SaveChanges();
             return View("Index");
         }
