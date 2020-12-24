@@ -161,6 +161,7 @@ namespace WorkDiary.Controllers
                 userModel.Model.PassHash = HashToHex(hash, true);
             }
 
+            userModel.Model.Position = db.Positions.Find(userModel.Model.Position.Id);
             db.Users.Update(userModel.Model);
             db.SaveChanges();
             return RedirectToAction("Index");
