@@ -21,6 +21,9 @@
                 Access Level
             </th>
             <th>
+                Position
+            </th>
+            <th>
                 Date of Birthd
             </th>
             <th></th>
@@ -40,6 +43,9 @@
             </td>
             <td >
                 @Html.DisplayFor(modelItem => item.AccessLevel)
+            </td>
+            <td >
+                @Html.DisplayFor(modelItem => item.Position.Name)
             </td>
             <td >
                 @Html.DisplayFor(modelItem => item.BirthdTime)
