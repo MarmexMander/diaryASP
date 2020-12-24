@@ -183,6 +183,7 @@ namespace WorkDiary.Controllers
             HashAlgorithm hashAlg = SHA256.Create();
             var hash = hashAlg.ComputeHash(userModel.Model.PassHash.Select(c => (byte)c).ToArray());
             userModel.Model.PassHash = HashToHex(hash, true);
+            userModel.Model.Position = db.Positions.Find(userModel.Model.Position.Id);
             db.Users.Add(userModel.Model);
             db.SaveChanges();
             return View("Index");
