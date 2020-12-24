@@ -144,8 +144,9 @@ namespace WorkDiary.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult UserInfo(User user)
+        public IActionResult UserInfo(int userId)
         {
+            User user = db.Users.Find(userId);
             ViewBag.UserWage = GetUserWage(user);
             return View(user);
         }

@@ -21,6 +21,27 @@ namespace WorkDiary.Models
                 );
                 context.SaveChanges();
             }
+            if (!context.Positions.Any())
+            {
+                context.Positions.AddRange(
+                    new Position
+                    {
+                        Name = "Administrator",
+                        Wage = 13000
+                    },
+                    new Position
+                    {
+                        Name = "Guardian",
+                        Wage = 10000
+                    },
+                    new Position
+                    {
+                        Name = "Manager",
+                        Wage = 11000
+                    }
+                );
+                context.SaveChanges();
+            }
         }
     }
 }

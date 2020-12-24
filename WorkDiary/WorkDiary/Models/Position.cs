@@ -1,4 +1,6 @@
-﻿namespace WorkDiary.Models
+﻿using System.Collections.Generic;
+
+namespace WorkDiary.Models
 {
     public class Position
     {
@@ -9,5 +11,6 @@
         public int Id { get => id; set => id = value; }
         public double Wage { get => wage; set => wage = value; }
         public string Name { get => name; set => name = value; }
+        public List<User> Users { get; set; }
     }
 }
