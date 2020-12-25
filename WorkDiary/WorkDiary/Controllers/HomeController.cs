@@ -53,36 +53,38 @@ namespace WorkDiary.Controllers
             return db.Find(typeof(User), id) as User;
         }
 
-        private double GetUserWage(User user)
+        private double GetUserWorkHours(User user)
         {
-            double wage = 0;
-            List<Log> userLogs = db.Logs.ToList().FindAll(
+            double totalHours = 0;
+            List<Log> userLogs = db.Logs.ToList();
+            userLogs = userLogs.FindAll(
                 l =>
-                l.Date.Month == DateTime.Now.Month &&
-                l.User.Id == user.Id &&
-                (
-                    l.Message == Constants.LogMessages.LOG_OUT ||
-                     l.Message == Constants.LogMessages.LOG_IN
-                )
-                );
+                    l.Date.Month == DateTime.Now.Month &&
+                    l.User.Id == user.Id &&
+                    (
+                        l.Message == Constants.LogMessages.LOG_OUT ||
+                        l.Message == Constants.LogMessages.LOG_IN
+                    )
+            );
             for (var i = 0; i < userLogs.Count; i++)
             {
                 TimeSpan daySpan;
                 if (userLogs[i].Message == Constants.LogMessages.LOG_OUT)
                     continue;
-                daySpan = userLogs[i].Date - userLogs[i + 1].Date;
-                if (userLogs[i + 1].Message == Constants.LogMessages.LOG_OUT)
-                {
-                    daySpan = userLogs[i].Date - userLogs[i + 1].Date;
-                    i++;
-                }
+                if(i + 1 < userLogs.Count)
+                    daySpan = userLogs[i + 1].Date - userLogs[i].Date;
                 else
-                    daySpan = TimeSpan.FromHours(8);
-
-                wage += user.Position.Wage * daySpan.TotalHours;
+                    daySpan = DateTime.Now - userLogs[i].Date;
+                if(daySpan.TotalHours > Constants.Main.MAX_HOURS_IN_WORK_DAY)
+                    daySpan = TimeSpan.FromHours(Constants.Main.MAX_HOURS_IN_WORK_DAY);
+                totalHours += daySpan.TotalHours;
             }
 
-            return wage;
+            return totalHours;
+        }
+        private double GetUserWage(User user)
+        {
+            return Math.Round(GetUserWorkHours(user)*user.Position.Wage, 2);
         }
 
         private void DeleteUserById(int id)
@@ -168,7 +170,7 @@ namespace WorkDiary.Controllers
 
         public IActionResult UserInfo(int userId)//BUG: Info didn`t showing
         {
-            User user = db.Users.Find(userId);
+            User user = GetUserById(userId);
             ViewBag.UserWage = GetUserWage(user);
             return View(user);
         }

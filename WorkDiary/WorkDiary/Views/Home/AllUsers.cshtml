@@ -12,9 +12,9 @@
             <h5 class="card-title">@Html.DisplayFor(modelItem => item.FullName)</h5>
             <h6 class="card-subtitle mb-2 text-muted">Email: @Html.DisplayFor(modelItem => item.Email)</h6>
             <p class="card-text">Position: @Html.DisplayFor(modelItem => item.Position.Name)<br />Date of Birthd: @Html.DisplayFor(modelItem => item.BirthdTime)<br />Access Level: @Html.DisplayFor(modelItem => item.AccessLevel)</p>
-            @Html.ActionLink("Edit", "EditUser", new { id = item.Id }) |
-            @Html.ActionLink("Details", "UserInfo", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "DeleteUser", new { id = item.Id })
+            @Html.ActionLink("Edit", "EditUser", new { userId = item.Id }) |
+            @Html.ActionLink("Details", "UserInfo", new { userId = item.Id }) |
+            @Html.ActionLink("Delete", "DeleteUser", new { userId = item.Id })
         </div>
     </div>
 }

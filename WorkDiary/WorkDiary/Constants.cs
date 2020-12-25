@@ -8,7 +8,8 @@ namespace WorkDiary.Constants
 {
     public static class Main
     {
-        public const int LOG_IN_COOKIES_EXPIRES_HOURS = 12;
+        public const int LOG_IN_COOKIES_EXPIRES_HOURS = 8;
+        public const int MAX_HOURS_IN_WORK_DAY = 8;
     }
     public static class LogMessages
     {
