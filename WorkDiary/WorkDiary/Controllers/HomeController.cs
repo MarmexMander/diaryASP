@@ -53,8 +53,8 @@ namespace WorkDiary.Controllers
             return db.Find(typeof(User), id) as User;
         }
 
-        private double GetUserWorkHours(User user)
-        {
+        private double GetUserWorkHours(User user) //TODO: Add work hours to user info
+        {                                          //TODO: Add every month logging of work hours and total wage
             double totalHours = 0;
             List<Log> userLogs = db.Logs.ToList();
             userLogs = userLogs.FindAll(
