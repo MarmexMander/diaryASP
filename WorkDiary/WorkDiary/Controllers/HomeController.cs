@@ -216,7 +216,7 @@ namespace WorkDiary.Controllers
             userModel.Model.Position = db.Positions.Find(userModel.Model.Position.PositionId);
             db.Users.Add(userModel.Model);
             db.SaveChanges();
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
