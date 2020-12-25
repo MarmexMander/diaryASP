@@ -76,7 +76,7 @@ namespace WorkDiary.Controllers
                 return RedirectToAction("Login");
             switch (CurUser.AccessLevel)
             {
-                case 0: return UserInfo(CurUser);
+                //case 0: return UserInfo(CurUser);
                 case 1:
                 case 2: return UserList(db.Users);
                 default: return RedirectToAction("Logout");

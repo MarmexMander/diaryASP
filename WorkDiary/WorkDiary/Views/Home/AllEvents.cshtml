@@ -9,14 +9,30 @@
 <p>
     <a asp-action="CreateEvent">Create New Event</a>
 </p>
-<table class="table">
+
+@foreach (var item in Model)
+{
+    <div class="card" style="width: 18rem; margin-left: 5px; margin-right: 5px; float: left;">
+        <div class="card-body">
+            <h5 class="card-title">@Html.DisplayFor(modelItem => item.NameEvent)</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Type: @Html.DisplayFor(modelItem => item.TypeEvent)</h6>
+            <p class="card-text">Date: @Html.DisplayFor(modelItem => item.DateTimeEvent)<br />Duration: @Html.DisplayFor(modelItem => item.DurationEvent)</p>
+            @Html.ActionLink("Edit", "EditEvent", new { id = item.Id }) |
+            @Html.ActionLink("Details", "EventUsers", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "DeleteEvent", new { id = item.Id })
+        </div>
+    </div>
+}
+
+
+@*<table class="table">
     <thead>
         <tr align="center">
             <th>
                 ID
             </th>
             <th>
-               Name
+                Name
             </th>
             <th>
                 Type
@@ -31,29 +47,30 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr align="center">
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NameEvent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TypeEvent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DurationEvent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateTimeEvent)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "EditEvent", new { id=item.Id }) |
-                @Html.ActionLink("Details", "EventUsers", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "DeleteEvent", new { id=item.Id })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr align="center">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NameEvent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeEvent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DurationEvent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTimeEvent)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditEvent", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "EventUsers", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "DeleteEvent", new { id = item.Id })
+                </td>
+            </tr>
+        }
     </tbody>
-</table>
+</table>*@
