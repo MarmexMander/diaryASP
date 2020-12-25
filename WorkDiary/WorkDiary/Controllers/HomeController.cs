@@ -168,7 +168,7 @@ namespace WorkDiary.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult UserInfo(int userId)//BUG: Info didn`t showing
+        public IActionResult UserInfo(int userId)
         {
             User user = GetUserById(userId);
             ViewBag.UserWage = GetUserWage(user);
@@ -191,7 +191,12 @@ namespace WorkDiary.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-        public IActionResult EventList(IEnumerable<Event> events)
+        public IActionResult EventList()
+        {
+            return View("AllEvents", db.Events);
+        }
+        
+        private IActionResult EventList(IEnumerable<Event> events)
         {
             return View("AllEvents", events);
         }
