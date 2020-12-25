@@ -15,8 +15,17 @@ namespace WorkDiary.Controllers
 
         public HomeController(DiaryContext context)
         {
-            
             db = context;
+            var users = db.Users;
+            var positions = db.Positions.ToList();
+            foreach (var dbUser in users)
+            {
+                int id = dbUser.PositionId;
+                var pos = positions.Find(p=>p.PositionId == id);
+                dbUser.Position = pos;
+            }
+
+            db.Users = users;
         }
 
         private User CurUser => GetUserById(int.Parse(Request.Cookies["user"]));
@@ -76,7 +85,7 @@ namespace WorkDiary.Controllers
                 return RedirectToAction("Login");
             switch (CurUser.AccessLevel)
             {
-                case 0: return UserInfo(CurUser);
+                case 0: return UserInfo(CurUser.Id);
                 case 1:
                 case 2: return UserList(db.Users);
                 default: return RedirectToAction("Logout");
@@ -162,7 +171,7 @@ namespace WorkDiary.Controllers
                 userModel.Model.PassHash = HashToHex(hash, true);
             }
 
-            userModel.Model.Position = db.Positions.Find(userModel.Model.Position.Id);
+            userModel.Model.Position = db.Positions.Find(userModel.Model.Position.PositionId);
             db.Users.Update(userModel.Model);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -184,7 +193,7 @@ namespace WorkDiary.Controllers
             HashAlgorithm hashAlg = SHA256.Create();
             var hash = hashAlg.ComputeHash(userModel.Model.PassHash.Select(c => (byte)c).ToArray());
             userModel.Model.PassHash = HashToHex(hash, true);
-            userModel.Model.Position = db.Positions.Find(userModel.Model.Position.Id);
+            userModel.Model.Position = db.Positions.Find(userModel.Model.Position.PositionId);
             db.Users.Add(userModel.Model);
             db.SaveChanges();
             return View("Index");

@@ -7,20 +7,6 @@ namespace WorkDiary.Models
         public static void Initialize(DiaryContext context)
         {
             //Add data
-
-            if (!context.Users.Any())
-            {
-                context.Users.AddRange(
-                    new User
-                    {
-                        FullName = "Root Admin",
-                        PassHash = "65E84BE33532FB784C48129675F9EFF3A682B27168C0EA744B2CF58EE02337C5",//qwerty
-                        AccessLevel = 2,
-                        Email = "qwerty@qwe.asd"
-                    }
-                );
-                context.SaveChanges();
-            }
             if (!context.Positions.Any())
             {
                 context.Positions.AddRange(
@@ -38,6 +24,25 @@ namespace WorkDiary.Models
                     {
                         Name = "Manager",
                         Wage = 11000
+                    }
+                );
+                context.SaveChanges();
+            }
+            if (!context.Users.Any())
+            {
+                context.Users.AddRange(
+                    new User
+                    {
+                        FullName = "Root Admin",
+                        PassHash = "65E84BE33532FB784C48129675F9EFF3A682B27168C0EA744B2CF58EE02337C5",//qwerty
+                        AccessLevel = 2,
+                        Email = "qwerty@qwe.asd",
+                        Position = new Position
+                        {
+                            
+                            Name = "RootAdmin",
+                            Wage = 13000
+                        },
                     }
                 );
                 context.SaveChanges();

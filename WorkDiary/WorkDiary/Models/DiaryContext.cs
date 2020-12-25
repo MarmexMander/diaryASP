@@ -21,7 +21,7 @@ namespace WorkDiary.Models
         {
             modelBuilder.Entity<Event>().HasMany(e => e.Users).WithMany(u => u.Events);
             modelBuilder.Entity<Event>().HasMany(e => e.ShowedUpUsers).WithMany(u=>u.VisitedEvents);
-            modelBuilder.Entity<User>().HasOne(u => u.Position).WithMany(p=>p.Users);
+            modelBuilder.Entity<User>().HasOne(u => u.Position).WithMany(p => p.Users);
         }
     }
 }
