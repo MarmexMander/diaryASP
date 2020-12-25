@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using WorkDiary.Models;
 
@@ -21,7 +20,7 @@ namespace WorkDiary.Controllers
             foreach (var dbUser in users)
             {
                 int id = dbUser.PositionId;
-                var pos = positions.Find(p=>p.PositionId == id);
+                var pos = positions.Find(p => p.PositionId == id);
                 dbUser.Position = pos;
             }
 
@@ -48,7 +47,7 @@ namespace WorkDiary.Controllers
 
         private User GetUserById(int? id)
         {
-            if (id==null)
+            if (id == null)
                 return null;
             return db.Find(typeof(User), id) as User;
         }
@@ -56,11 +55,22 @@ namespace WorkDiary.Controllers
         private double GetUserWage(User user)
         {
             double wage = 0;
-            List<Log> userLogs = db.Logs.Where(l=>l.Date.Month == DateTime.Now.Month).ToList();
+            List<Log> userLogs = db.Logs.Where(
+                l =>
+                l.Date.Month == DateTime.Now.Month &&
+                l.User.Id == user.Id &&
+                (
+                    l.Message == Constants.LogMessages.LOG_OUT ||
+                     l.Message == Constants.LogMessages.LOG_IN
+                )
+                ).ToList();
             for (var i = 0; i < userLogs.Count; i++)
             {
                 TimeSpan daySpan;
-                if (userLogs[i + 1].Message == "Logged Out")
+                if (userLogs[i].Message == Constants.LogMessages.LOG_OUT)
+                    continue;
+                daySpan = userLogs[i].Date - userLogs[i + 1].Date;
+                if (userLogs[i + 1].Message == Constants.LogMessages.LOG_OUT)
                 {
                     daySpan = userLogs[i].Date - userLogs[i + 1].Date;
                     i++;
@@ -94,7 +104,7 @@ namespace WorkDiary.Controllers
 
         public IActionResult UserList(IEnumerable<User> users)
         {
-            
+
             ViewBag.AccessLevel = CurUser.AccessLevel;
             if (CurUser.AccessLevel > 0)
                 return View("AllUsers", users);
@@ -113,7 +123,7 @@ namespace WorkDiary.Controllers
             if (email == null || passHash == null) return View();
 
             HashAlgorithm hashAlg = SHA256.Create();
-            var hash = hashAlg.ComputeHash(passHash.Select(c => (byte) c).ToArray());
+            var hash = hashAlg.ComputeHash(passHash.Select(c => (byte)c).ToArray());
             passHash = HashToHex(hash, true);
             var user = db.Users.First(u => u.Email == email);
             if (user.PassHash == passHash)
@@ -133,7 +143,7 @@ namespace WorkDiary.Controllers
             {
                 var user = GetUserById(id);
                 user.PassHash = "";
-                return View(new Models.UserViewModel(){Model = user, Positions = db.Positions.ToList()});
+                return View(new UserViewModel() { Model = user, Positions = db.Positions.ToList() });
             }
 
             return RedirectToAction("Index");
@@ -153,7 +163,7 @@ namespace WorkDiary.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult UserInfo(int userId)
+        public IActionResult UserInfo(int userId)//BUG: Info didn`t showing
         {
             User user = db.Users.Find(userId);
             ViewBag.UserWage = GetUserWage(user);
@@ -163,7 +173,7 @@ namespace WorkDiary.Controllers
         [HttpPost]
         public IActionResult EditUser(UserViewModel userModel)
         {
-            
+
             if (userModel.Model.PassHash != "")
             {
                 HashAlgorithm hashAlg = SHA256.Create();
@@ -178,13 +188,13 @@ namespace WorkDiary.Controllers
         }
         public IActionResult EventList(IEnumerable<Event> events)
         {
-            return View("AllEvents",events);
+            return View("AllEvents", events);
         }
         [HttpGet]
         public IActionResult CreateUser()
         {
             ViewBag.Positions = db.Positions.ToList();
-            return View("NewUser", new Models.UserViewModel(){Positions = db.Positions.ToList()});
+            return View("NewUser", new UserViewModel() { Positions = db.Positions.ToList() });
         }
         [HttpPost]
         public IActionResult CreateUser(UserViewModel userModel)
@@ -198,7 +208,7 @@ namespace WorkDiary.Controllers
             db.SaveChanges();
             return View("Index");
         }
-        
+
         [HttpGet]
         public IActionResult CreateEvent()
         {
@@ -212,6 +222,6 @@ namespace WorkDiary.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-        
+
     }
 };
