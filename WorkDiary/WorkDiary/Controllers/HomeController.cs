@@ -130,7 +130,7 @@ namespace WorkDiary.Controllers
             if (user.PassHash == passHash)
             {
                 CookieOptions userCookieOptions = new CookieOptions();
-                userCookieOptions.Expires = new DateTimeOffset(DateTime.Now, TimeSpan.FromHours(Constants.Main.LOG_IN_COOKIES_EXPIRES_HOURS));
+                userCookieOptions.Expires = new DateTimeOffset(DateTime.Now + TimeSpan.FromHours(Constants.Main.LOG_IN_COOKIES_EXPIRES_HOURS));
                 Response.Cookies.Append("user", user.Id.ToString(), userCookieOptions);
                 AddLog(Constants.LogMessages.LOG_IN, user.Id);
                 return RedirectToAction("Index");
