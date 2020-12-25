@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WorkDiary.Models
 {
     public class Position
     {
-        private int id;
-        private double wage;
-        private string name;
+        public int PositionId { get; set; }
+        public double Wage { get; set; }
 
-        public int Id { get => id; set => id = value; }
-        public double Wage { get => wage; set => wage = value; }
-        public string Name { get => name; set => name = value; }
+        public string Name { get; set; }
+
         public List<User> Users { get; set; }
     }
 }
