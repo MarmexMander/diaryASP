@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WorkDiary.Models;
 
@@ -55,7 +56,7 @@ namespace WorkDiary.Controllers
         private double GetUserWage(User user)
         {
             double wage = 0;
-            List<Log> userLogs = db.Logs.Where(
+            List<Log> userLogs = db.Logs.ToList().FindAll(
                 l =>
                 l.Date.Month == DateTime.Now.Month &&
                 l.User.Id == user.Id &&
@@ -63,7 +64,7 @@ namespace WorkDiary.Controllers
                     l.Message == Constants.LogMessages.LOG_OUT ||
                      l.Message == Constants.LogMessages.LOG_IN
                 )
-                ).ToList();
+                );
             for (var i = 0; i < userLogs.Count; i++)
             {
                 TimeSpan daySpan;
@@ -128,8 +129,10 @@ namespace WorkDiary.Controllers
             var user = db.Users.First(u => u.Email == email);
             if (user.PassHash == passHash)
             {
-                Response.Cookies.Append("user", user.Id.ToString());
-                AddLog("Logged In", user.Id);
+                CookieOptions userCookieOptions = new CookieOptions();
+                userCookieOptions.Expires = new DateTimeOffset(DateTime.Now, TimeSpan.FromHours(Constants.Main.LOG_IN_COOKIES_EXPIRES_HOURS));
+                Response.Cookies.Append("user", user.Id.ToString(), userCookieOptions);
+                AddLog(Constants.LogMessages.LOG_IN, user.Id);
                 return RedirectToAction("Index");
             }
 
@@ -159,7 +162,7 @@ namespace WorkDiary.Controllers
         public IActionResult Logout()
         {
             Response.Cookies.Delete("user");
-            AddLog("Logged Out", CurUser.Id);
+            AddLog(Constants.LogMessages.LOG_OUT, CurUser.Id);
             return RedirectToAction("Index");
         }
 
