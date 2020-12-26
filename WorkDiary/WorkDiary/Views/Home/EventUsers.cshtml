@@ -5,30 +5,38 @@
 }
 
 <h1>Event Users</h1>
-
-@foreach (var item in Model.ShowedUpUsers)
+@if (Model.Users != null)
 {
-    @if (Model.Users.Contains(item))
+    if (Model.ShowedUpUsers != null) { Model.ShowedUpUsers = new List<User>(); }
+
+    foreach (var item in Model.Users)
     {
-        <div class="card" style="background-color: lightgreen; width: 18rem; margin-left: 5px; margin-right: 5px; float: left;">
-            <div class="card-body">
-                <h5 class="card-title">@Html.DisplayFor(modelItem => item.FullName)</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Email: @Html.DisplayFor(modelItem => item.Email)</h6>
-                <p class="card-text">Position: @Html.DisplayFor(modelItem => item.Position.Name)<br />Date of Birthd: @Html.DisplayFor(modelItem => item.BirthdTime)<br />Access Level: @Html.DisplayFor(modelItem => item.AccessLevel)</p>
-                @Html.ActionLink("Details", "UserInfo", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "DeleteUser", new { id = item.Id })
+        @if (Model.ShowedUpUsers.Contains(item))
+        {
+            <div class="card" style="background-color: lightgreen; width: 18rem; margin-left: 5px; margin-right: 5px; float: left;">
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.FullName)</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Email: @Html.DisplayFor(modelItem => item.Email)</h6>
+                    <p class="card-text">Position: @Html.DisplayFor(modelItem => item.Position.Name)<br />Date of Birthd: @Html.DisplayFor(modelItem => item.BirthdTime)<br />Access Level: @Html.DisplayFor(modelItem => item.AccessLevel)</p>
+                    @Html.ActionLink("Details", "UserInfo", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "DeleteUser", new { id = item.Id })
+                </div>
             </div>
-        </div>
-    }
-    else if (!Model.Users.Contains(item))
-    {
-        <div class="card" style="width: 18rem; margin-left: 5px; margin-right: 5px; float: left;">
-            <div class="card-body">
-                <h5 class="card-title">@Html.DisplayFor(modelItem => item.FullName)</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Email: @Html.DisplayFor(modelItem => item.Email)</h6>
-                <p class="card-text">Position: @Html.DisplayFor(modelItem => item.Position.Name)<br />Date of Birthd: @Html.DisplayFor(modelItem => item.BirthdTime)<br />Access Level: @Html.DisplayFor(modelItem => item.AccessLevel)</p>
-                @Html.ActionLink("Details", "UserInfo", new { id = item.Id })
+        }
+        else if (!Model.ShowedUpUsers.Contains(item))
+        {
+            <div class="card" style="width: 18rem; margin-left: 5px; margin-right: 5px; float: left;">
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.FullName)</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Email: @Html.DisplayFor(modelItem => item.Email)</h6>
+                    <p class="card-text">Position: @Html.DisplayFor(modelItem => item.Position.Name)<br />Date of Birthd: @Html.DisplayFor(modelItem => item.BirthdTime)<br />Access Level: @Html.DisplayFor(modelItem => item.AccessLevel)</p>
+                    @Html.ActionLink("Details", "UserInfo", new { id = item.Id })
+                </div>
             </div>
-        </div>
+        }
     }
+}
+else
+{
+    Write("Users Empty");
 }

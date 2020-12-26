@@ -18,7 +18,7 @@
             <h6 class="card-subtitle mb-2 text-muted">Type: @Html.DisplayFor(modelItem => item.TypeEvent)</h6>
             <p class="card-text">Date: @Html.DisplayFor(modelItem => item.DateTimeEvent)<br />Duration: @Html.DisplayFor(modelItem => item.DurationEvent)</p>
             @Html.ActionLink("Edit", "EditEvent", new { id = item.Id }) |
-            @Html.ActionLink("Details", "EventUsers", new { id = item.Id }) |
+            @Html.ActionLink("Details", "EventDetails", new { id = item.Id }) |
             @Html.ActionLink("Delete", "DeleteEvent", new { id = item.Id })
         </div>
     </div>

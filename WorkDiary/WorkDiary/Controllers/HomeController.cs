@@ -233,6 +233,10 @@ namespace WorkDiary.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+        [HttpGet]
+        public IActionResult EventDetails(int id)
+        {
+            return View("EventUsers", db.Events.Find(id));
+        }
     }
 };
