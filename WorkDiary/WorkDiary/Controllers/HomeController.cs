@@ -223,6 +223,7 @@ namespace WorkDiary.Controllers
         [HttpGet]
         public IActionResult CreateEvent()
         {
+            ViewBag.Users = db.Users;
             return View("NewEvent");
         }
 
