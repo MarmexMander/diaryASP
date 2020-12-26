@@ -87,9 +87,10 @@ namespace WorkDiary.Controllers
             return Math.Round(GetUserWorkHours(user)*user.Position.Wage, 2);
         }
 
-        private void DeleteUserById(int id)
+        private void DeleteUserById(int userId)
         {
-            db.Remove(GetUserById(id));
+            db.Users.Remove(GetUserById(userId));
+            db.SaveChanges();
         }
 
         public IActionResult Index()
@@ -154,10 +155,10 @@ namespace WorkDiary.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult DeleteUser(int id)
+        public IActionResult DeleteUser(int userId)
         {
-            if (CurUser.AccessLevel > 1 && int.Parse(Request.Cookies["user"]) != id)
-                DeleteUserById(id);
+            if (CurUser.AccessLevel > 1 && int.Parse(Request.Cookies["user"]) != userId)
+                DeleteUserById(userId);
             return RedirectToAction("Index");
         }
 
