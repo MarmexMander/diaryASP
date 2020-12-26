@@ -173,7 +173,7 @@ namespace WorkDiary.Controllers
         {
             User user = GetUserById(userId);
             ViewBag.UserWage = GetUserWage(user);
-            return View(user);
+            return View("UserInfo",user);
         }
 
         [HttpPost]
